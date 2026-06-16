@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>고객센터 - 게시판</title>
+    <style>
+        main { max-width: 1000px; margin: 40px auto; padding: 30px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .btn-write { float: right; padding: 8px 15px; background-color: #007bff; color: #fff; border-radius: 4px; font-size: 14px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 15px; border-bottom: 1px solid #ddd; text-align: center; font-size: 14px; }
+        th { background-color: #f1f3f5; font-weight: bold; }
+        .secret-text { color: #9ca3af; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<%- include('partials/header') %>
+
+<main>
+    <div style="overflow: hidden; margin-bottom: 20px;">
+        <h2 style="float: left; margin:0;">고객센터 (1:1 문의)</h2>
+        <a href="/cs/write" class="btn-write">문의하기</a>
+    </div>
+    <table>
+        <thead><tr><th width="10%">번호</th><th width="50%">제목</th><th width="15%">작성자</th><th width="25%">작성일</th></tr></thead>
+        <tbody>
+        <% if (posts && posts.length > 0) { %>
+            <% posts.forEach(function(post) { %>
+                <tr>
+                    <td><%= post.id %></td>
+                    <td style="text-align: left;">
+                        <% if (user && (user.username === 'admin' || user.username === post.author)) { %>
+                            <a href="/cs/view/<%= post.id %>" style="color: #007bff; font-weight: bold;">🔓 [내 문의글] <%= post.title %></a>
+                        <% } else { %>
+                            <span class="secret-text">🔒 비밀글입니다. (작성자와 관리자만 볼 수 있습니다.)</span>
+                        <% } %>
+                    </td>
+                    <td><%= post.author === 'admin' ? '관리자' : post.author %></td>
+                    <td><%= post.created_at %></td>
+                </tr>
+            <% }); %>
+        <% } else { %>
+            <tr><td colspan="4" style="color: #999; padding: 30px 0;">등록된 문의가 없습니다.</td></tr>
+        <% } %>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

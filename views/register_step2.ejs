@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 입력 - 2단계</title>
+    <style>
+        body { font-family: '맑은 고딕', sans-serif; background-color: #f8f9fa; padding: 50px; display: flex; justify-content: center; margin: 0; }
+        .register-box { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 400px; }
+        h2 { text-align: center; margin-bottom: 30px; color: #007bff; margin-top: 0; }
+
+        .input-group { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .input-group input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn-check { padding: 12px 15px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap; font-weight: bold; }
+        .btn-check:hover { background-color: #5a6268; }
+
+        .btn-submit { width: 100%; padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 20px; font-size: 16px; }
+        .btn-submit:hover { background-color: #0056b3; }
+
+        /* 메시지 출력 스타일 */
+        .msg { font-size: 13px; margin-bottom: 15px; display: block; font-weight: bold; }
+        .msg.success { color: #28a745; }
+        .msg.error { color: #dc3545; }
+    </style>
+</head>
+<body>
+
+<div class="register-box">
+    <h2>회원정보 입력</h2>
+
+    <form action="/register/step2" method="POST" id="registerForm" onsubmit="return validateForm()">
+
+        <div class="input-group">
+            <input type="text" id="username" name="username" placeholder="아이디 (필수)" required>
+            <button type="button" class="btn-check" onclick="checkDuplicateId()">중복 확인</button>
+        </div>
+        <span id="idCheckMsg" class="msg"></span>
+        <div class="input-group" style="margin-bottom: 10px;">
+            <input type="password" name="password" placeholder="비밀번호 (필수)" required>
+        </div>
+
+        <div class="input-group" style="margin-bottom: 10px;">
+            <input type="text" name="name" placeholder="이름 (필수)" required>
+        </div>
+
+        <div class="input-group" style="margin-bottom: 10px;">
+            <input type="text" name="phone" placeholder="연락처 (예: 010-1234-5678)" required>
+        </div>
+        <div class="input-group" style="margin-bottom: 10px;">
+            <input type="text" name="address" placeholder="주소 (예: 서울시 강남구...)" required>
+        </div>
+
+        <button type="submit" class="btn-submit">가입 완료</button>
+    </form>
+</div>
+
+<script>
+    let isIdChecked = false; // 중복 확인 완료 여부를 저장하는 변수
+
+    // 사용자가 아이디 입력칸의 글자를 지우거나 수정하면 다시 확인하도록 초기화
+    document.getElementById('username').addEventListener('input', function() {
+        isIdChecked = false;
+        document.getElementById('idCheckMsg').textContent = '';
+    });
+
+    // [중복 확인] 버튼 클릭 시 실행되는 AJAX 함수
+    async function checkDuplicateId() {
+        const username = document.getElementById('username').value.trim();
+        const msgEl = document.getElementById('idCheckMsg');
+
+        if (!username) {
+            msgEl.textContent = '아이디를 먼저 입력해주세요.';
+            msgEl.className = 'msg error';
+            return;
+        }
+
+        try {
+            // 서버의 /register/check-id 주소로 아이디 정보를 보냄
+            const response = await fetch('/register/check-id', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            });
+            const data = await response.json();
+
+            // 서버의 응답(data.exists)에 따라 메시지 출력
+            if (data.exists) {
+                msgEl.textContent = '❌ 이미 사용 중인 아이디입니다.';
+                msgEl.className = 'msg error';
+                isIdChecked = false;
+            } else {
+                msgEl.textContent = '✅ 사용 가능한 아이디입니다.';
+                msgEl.className = 'msg success';
+                isIdChecked = true;
+            }
+        } catch (err) {
+            alert('서버 통신 중 오류가 발생했습니다.');
+        }
+    }
+
+    // [가입 완료] 버튼 클릭 시 실행되는 폼 검증 로직
+    function validateForm() {
+        if (!isIdChecked) {
+            alert('아이디 중복 확인을 완료해주세요.');
+            document.getElementById('username').focus(); // 아이디 입력칸으로 포커스 이동
+            return false; // 가입 진행(폼 제출)을 막음
+        }
+        return true; // 이상이 없으면 서버로 데이터 전송
+    }
+</script>
+
+</body>
+</html>

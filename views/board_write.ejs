@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기 - 고객센터</title>
+    <style>
+        body { font-family: '맑은 고딕', sans-serif; background-color: #f8f9fa; padding: 40px; }
+        .write-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; margin-bottom: 20px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: #555; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .form-group textarea { height: 300px; resize: vertical; }
+        .btn-group { text-align: right; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-cancel { background-color: #6c757d; color: white; margin-right: 10px; }
+        .btn-submit { background-color: #007bff; color: white; }
+    </style>
+</head>
+<body>
+<div class="write-container">
+    <h2>문의글 작성</h2>
+    <form action="/cs/write" method="POST">
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
+        </div>
+        <div class="form-group">
+            <label for="author">작성자</label>
+            <input type="text" id="author" name="author" value="<%= user ? user.username : '익명' %>" readonly style="background-color: #eee;">
+        </div>
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" placeholder="문의하실 내용을 상세히 적어주세요." required></textarea>
+        </div>
+        <div class="btn-group">
+            <a href="/cs" class="btn btn-cancel">취소</a>
+            <button type="submit" class="btn btn-submit">등록하기</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

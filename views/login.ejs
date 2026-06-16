@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 웹프로그래밍 과제</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: '맑은 고딕', sans-serif; }
+        body { background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+        .login-container { background-color: #ffffff; width: 100%; max-width: 400px; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .logo { text-align: center; font-size: 24px; font-weight: bold; color: #2563eb; margin-bottom: 30px; text-decoration: none; display: block; }
+
+        h2 { font-size: 20px; font-weight: 600; margin-bottom: 20px; color: #333; text-align: center; }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 14px; color: #666; margin-bottom: 6px; font-weight: bold; }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; transition: border-color 0.3s; }
+        .input-group input:focus { border-color: #2563eb; outline: none; }
+
+        .btn-submit { width: 100%; padding: 14px; background-color: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; margin-top: 10px; }
+        .btn-submit:hover { background-color: #1e4bb8; }
+
+        .form-footer { display: flex; justify-content: space-between; margin-top: 20px; font-size: 13px; color: #666; }
+        .form-footer a { color: #666; text-decoration: none; }
+        .form-footer a:hover { color: #2563eb; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <a href="/" class="logo">MyShoppingMall</a>
+    <h2>로그인</h2>
+
+    <form action="/login" method="POST">
+        <div class="input-group">
+            <label for="username">아이디</label>
+            <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+        </div>
+
+        <button type="submit" class="btn-submit">로그인</button>
+    </form>
+
+    <!-- 로그인 폼 내부 버튼 주변에 추가해 주세요 -->
+    <div style="text-align: center; margin-top: 15px;">
+        <a href="/find-account" style="color: #666; font-size: 14px; text-decoration: none;">아이디 / 비밀번호 찾기</a> |
+        <a href="/register" style="color: #666; font-size: 14px; text-decoration: none;">회원가입</a>
+    </div>
+</div>
+
+</body>
+</html>

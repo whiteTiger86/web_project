@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title><%= product.name %> - 상세정보</title>
+    <style>
+        .detail-container { max-width: 1000px; margin: 50px auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; gap: 50px; }
+        .detail-image { flex: 1; border-radius: 8px; overflow: hidden; background: #f1f3f5; }
+        .detail-image img { width: 100%; height: 100%; object-fit: cover; }
+        .detail-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .detail-info h2 { font-size: 32px; margin-top: 0; margin-bottom: 20px; }
+        .detail-info .price { font-size: 24px; color: #007bff; font-weight: bold; margin-bottom: 40px; }
+        .detail-info p { color: #666; line-height: 1.6; margin-bottom: 40px; }
+        .btn-group { display: flex; gap: 15px; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; }
+        .btn-cart { background-color: #333; color: #fff; }
+        .btn-wish { background-color: #ff6b6b; color: #fff; }
+    </style>
+</head>
+<body>
+
+<%- include('partials/header') %>
+
+<div class="detail-container">
+    <div class="detail-image"><img src="/images/<%= product.image %>" alt="<%= product.name %>"></div>
+    <div class="detail-info">
+        <h2><%= product.name %></h2>
+        <div class="price"><%= product.price.toLocaleString() %>원</div>
+        <p>가장 신선하고 맛있는 품질을 자랑하는 <strong><%= product.name %></strong>입니다. <br>오늘 주문하시면 빠르고 안전하게 당일 배송해 드립니다!</p>
+        <div class="btn-group">
+            <form action="/cart/add/<%= product.id %>" method="POST" style="flex: 1; display: flex;">
+                <button type="submit" class="btn btn-cart">장바구니 담기</button>
+            </form>
+            <form action="/wishlist/add/<%= product.id %>" method="POST" style="flex: 1; display: flex;">
+                <button type="submit" class="btn btn-wish">위시리스트 ♥</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

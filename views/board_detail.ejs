@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 보기</title>
+    <style>
+        body { font-family: '맑은 고딕', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; }
+        .detail-container { max-width: 800px; margin: 40px auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .header { border-bottom: 2px solid #007bff; padding-bottom: 15px; margin-bottom: 20px; }
+        .content { min-height: 200px; padding: 20px 0; line-height: 1.6; font-size: 16px; color: #444; }
+        .btn-group { text-align: right; border-top: 1px solid #ddd; padding-top: 15px; }
+        .btn { padding: 8px 15px; border-radius: 4px; color: white; font-size: 14px; margin-left: 5px; text-decoration: none; }
+        .btn-list { background-color: #6c757d; } .btn-edit { background-color: #f59e0b; } .btn-delete { background-color: #dc2626; }
+        .reply-section { margin-top: 40px; border-top: 2px solid #e5e7eb; padding-top: 25px; }
+        .reply-item { background: #f9fafb; padding: 15px; margin-bottom: 12px; border-radius: 6px; border-left: 4px solid #007bff; }
+        .reply-form-container { margin-top: 30px; background: #f3f4f6; padding: 20px; border-radius: 6px; }
+        textarea { width: 100%; height: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; resize: none; }
+        .btn-submit { background-color: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; float: right; margin-top:10px; }
+    </style>
+</head>
+<body>
+<div class="detail-container">
+    <div class="header">
+        <h2 style="margin:0;">🔒 비밀글: <%= post.title %></h2>
+        <p style="color: #666; font-size: 14px; margin-top: 10px;">작성자: <%= post.author %> | 작성일: <%= post.created_at %></p>
+    </div>
+
+    <div class="content"><div style="white-space: pre-wrap;"><%= post.content %></div></div>
+
+    <div class="btn-group">
+        <a href="/cs" class="btn btn-list">목록</a>
+        <% if(user && (user.username === post.author || user.username === 'admin')) { %>
+            <a href="/cs/edit/<%= post.id %>" class="btn btn-edit">수정</a>
+            <a href="/cs/delete/<%= post.id %>" class="btn btn-delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+        <% } %>
+    </div>
+
+    <div class="reply-section">
+        <h3 style="font-size: 18px; margin-bottom: 15px;">📢 관리자 답변</h3>
+        <% if (replies && replies.length > 0) { %>
+            <% replies.forEach(function(reply) { %>
+                <div class="reply-item">
+                    <p style="font-size: 13px; color: #6b7280; margin-bottom: 5px;"><strong style="color: #007bff;">↳ 관리자 답변</strong> (<%= reply.created_at %>)</p>
+                    <p style="margin: 0; white-space: pre-wrap; font-size: 15px;"><%= reply.content %></p>
+                </div>
+            <% }); %>
+        <% } else { %><p style="color: #9ca3af; font-size: 14px;">아직 등록된 답변이 없습니다.</p><% } %>
+    </div>
+
+    <% if (user && user.username === 'admin') { %>
+        <div class="reply-form-container">
+            <h4 style="margin-top:0; margin-bottom:10px;">고객 문의 답변 작성 (관리자 전용)</h4>
+            <form action="/cs/reply/<%= post.id %>" method="POST" style="overflow: hidden;">
+                <textarea name="content" placeholder="공식 답변 내용을 입력하세요." required></textarea>
+                <button type="submit" class="btn-submit">답변 등록</button>
+            </form>
+        </div>
+    <% } %>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디 / 비밀번호 찾기</title>
+    <style>
+        body { font-family: '맑은 고딕', sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { display: flex; gap: 30px; max-width: 800px; width: 100%; padding: 20px; }
+        .box { flex: 1; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; margin-top: 0; margin-bottom: 30px; font-size: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #0056b3; }
+        .back-link { text-align: center; margin-top: 30px; width: 100%; }
+        .back-link a { color: #666; text-decoration: none; font-size: 14px; }
+        .back-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div>
+    <h1 style="text-align: center; color: #007bff; margin-bottom: 40px;">계정 정보 찾기</h1>
+
+    <div class="container">
+        <!-- 아이디 찾기 폼 -->
+        <div class="box">
+            <h2>🔍 아이디 찾기</h2>
+            <form action="/find-id" method="POST">
+                <label style="font-size: 13px; color: #555;">가입 시 등록한 이름</label>
+                <input type="text" name="name" placeholder="이름 입력" required>
+                <button type="submit">아이디 찾기</button>
+            </form>
+        </div>
+
+        <!-- 비밀번호 찾기 폼 -->
+        <div class="box">
+            <h2>🔑 비밀번호 찾기</h2>
+            <form action="/find-pw" method="POST">
+                <label style="font-size: 13px; color: #555;">가입 시 등록한 아이디</label>
+                <input type="text" name="username" placeholder="아이디 입력" required>
+                <label style="font-size: 13px; color: #555;">가입 시 등록한 이름</label>
+                <input type="text" name="name" placeholder="이름 입력" required>
+                <button type="submit" style="background-color: #333;">임시 비밀번호 발급</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="back-link">
+        <a href="/login">← 로그인 페이지로 돌아가기</a>
+    </div>
+</div>
+
+</body>
+</html>

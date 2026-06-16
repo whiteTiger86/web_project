@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지 - 대시보드</title>
+    <style>
+        main { max-width: 1000px; margin: 40px auto; padding: 20px 50px; }
+        h2 { font-size: 24px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 30px; }
+
+        /* 회원 정보 카드 섹션 */
+        .profile-card { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+        .profile-title { font-size: 18px; font-weight: bold; color: #007bff; margin-bottom: 5px; border-bottom: 1px dashed #ddd; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .profile-info { display: grid; grid-template-columns: 120px 1fr; gap: 10px; font-size: 15px; line-height: 1.6; }
+        .profile-info .label { font-weight: bold; color: #666; }
+        .profile-info .value { color: #111; }
+
+        /* 마이페이지 퀵메뉴 링크 (설계도 구조 반영) */
+        .quick-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 40px; }
+        .menu-item { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; font-weight: bold; font-size: 15px; color: #333; transition: all 0.2s; border: 1px solid #eee; }
+        .menu-item:hover { background: #007bff; color: #fff; border-color: #007bff; transform: translateY(-2px); }
+
+        /* 주문 내역 섹션 */
+        .order-section { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .order-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .order-table th, .order-table td { padding: 12px; border-bottom: 1px solid #ddd; text-align: center; font-size: 14px; }
+        .order-table th { background-color: #f8f9fa; font-weight: bold; color: #555; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .status-delivery { background-color: #e3faf2; color: #20c997; } /* 배송중 */
+        .status-complete { background-color: #e7f5ff; color: #228be6; } /* 결제완료 */
+
+        .btn-action { padding: 5px 10px; border: 1px solid #dee2e6; background: #fff; border-radius: 4px; font-size: 12px; cursor: pointer; color: #555; }
+        .btn-action:hover { background: #f1f3f5; color: #dc3545; border-color: #dc3545; }
+    </style>
+</head>
+<body>
+
+<%- include('partials/header') %>
+
+<main>
+    <h2>마이페이지 대시보드</h2>
+
+    <div class="profile-card">
+        <div class="profile-title">
+            <span>👤 나의 회원 정보</span>
+            <a href="/mypage/edit" style="font-size: 13px; color: #007bff; font-weight: normal; text-decoration: underline;">정보 수정하기</a>
+        </div>
+        <div class="profile-info">
+            <div class="label">아이디 (ID)</div>
+            <div class="value"><%= user.username %></div>
+
+            <div class="label">이름</div>
+            <div class="value"><%= user.name %></div>
+
+            <div class="label">연락처</div>
+            <div class="value"><%= user.phone ? user.phone : '등록된 연락처가 없습니다.' %></div>
+
+            <div class="label">배송지 주소</div>
+            <div class="value"><%= user.address ? user.address : '등록된 주소가 없습니다.' %></div>
+        </div>
+    </div>
+
+    <div class="quick-menu">
+        <a href="/cart" class="menu-item">🛒 장바구니</a>
+        <a href="/wishlist" class="menu-item">♥ 위시리스트</a>
+        <a href="/mypage/edit" class="menu-item">⚙️ 회원정보 수정</a>
+        <a href="/cs" class="menu-item">💬 1:1 고객센터</a>
+    </div>
+
+    <div class="order-section">
+        <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #333;">📦 최근 주문 / 배송 현황</div>
+        <table class="order-table">
+            <thead>
+            <tr>
+                <th width="15%">주문번호</th>
+                <th width="45%">주문 상품 정보</th>
+                <th width="15%">결제금액</th>
+                <th width="15%">배송상태</th>
+                <th width="10%">관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if (orders && orders.length > 0) { %>
+                <% orders.forEach(function(order) { %>
+                    <tr>
+                        <td>#<%= order.id %></td>
+                        <td style="text-align: left; font-weight: bold;"><%= order.product_names || '주문 상품' %></td>
+                        <td><%= order.total_price.toLocaleString() %>원</td>
+                        <td>
+                <span class="status-badge <%= order.status === '배송 중' ? 'status-delivery' : 'status-complete' %>">
+                  <%= order.status || '결제 완료' %>
+                </span>
+                        </td>
+                        <td>
+                            <button class="btn-action" onclick="alert('주문취소/반품 접수가 완료되었습니다.')">취소/반품</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="5" style="padding: 40px 0; color: #888;">최근 주문한 내역이 존재하지 않습니다.</td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

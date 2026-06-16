@@ -1,0 +1,60 @@
+<style>
+    /* 모든 페이지에 공통으로 적용될 기본 스타일 */
+    body { font-family: '맑은 고딕', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; }
+    a { text-decoration: none; color: #333; }
+    ul, li { list-style: none; margin: 0; padding: 0; }
+
+    /* 상단 로그인 바 */
+    .top-bar { background-color: #f1f3f5; padding: 10px 50px; display: flex; justify-content: flex-end; font-size: 13px; }
+    .top-bar a { margin-left: 20px; color: #555; }
+    .top-bar a:hover { color: #007bff; font-weight: bold; }
+
+    /* 메인 내비게이션 */
+    header { background-color: #fff; border-bottom: 1px solid #ddd; }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; max-width: 1200px; margin: 0 auto; }
+    .logo { font-size: 28px; font-weight: bold; color: #007bff; }
+    .main-menu { display: flex; gap: 30px; font-size: 16px; font-weight: bold; align-items: center; }
+    .main-menu a { padding-bottom: 5px; transition: color 0.2s; }
+    .main-menu a:hover { color: #007bff; }
+
+    /* 현재 위치한 메뉴를 파란색으로 표시해주는 스타일 */
+    .main-menu a.active { color: #007bff; border-bottom: 2px solid #007bff; }
+</style>
+
+<div class="top-bar">
+    <% if (typeof user !== 'undefined' && user) { %>
+        <span><strong><%= user.name %></strong>님 환영합니다!</span>
+        <a href="/mypage" style="font-weight: bold; color: #007bff;">마이페이지</a>
+        <a href="/logout">로그아웃</a>
+    <% } else { %>
+        <a href="/login">로그인</a>
+        <a href="/register">회원가입</a>
+    <% } %>
+</div>
+
+<header>
+    <nav>
+        <a href="/" class="logo">MyShoppingMall</a>
+        <ul class="main-menu" id="mainMenu">
+            <li><a href="/products">상품 리스트</a></li>
+            <li><a href="/wishlist">위시리스트</a></li>
+            <li><a href="/cart">장바구니</a></li>
+            <li><a href="/cs">고객센터(게시판)</a></li>
+        </ul>
+    </nav>
+</header>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const currentPath = window.location.pathname;
+        const menuLinks = document.querySelectorAll('#mainMenu a');
+
+        menuLinks.forEach(link => {
+            const linkPath = link.getAttribute('href');
+            // 현재 주소와 메뉴 링크가 일치하면 active 클래스 추가
+            if (currentPath === linkPath || (linkPath !== '/' && currentPath.startsWith(linkPath))) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>

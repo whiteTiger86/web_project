@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>글 수정</title>
+    <style>
+        body { font-family: '맑은 고딕', sans-serif; background-color: #f8f9fa; padding: 40px; }
+        .write-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; box-sizing: border-box;}
+        textarea { height: 300px; }
+        button { padding: 10px 20px; background-color: #f59e0b; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="write-container">
+    <h2>게시글 수정</h2>
+    <form action="/cs/edit/<%= post.id %>" method="POST">
+        <input type="text" name="title" value="<%= post.title %>" required>
+        <input type="text" value="<%= post.author %>" readonly style="background-color: #eee;">
+        <textarea name="content" required><%= post.content %></textarea>
+
+        <button type="submit">수정 완료</button>
+        <a href="/cs/view/<%= post.id %>" style="margin-left: 10px;">취소</a>
+    </form>
+</div>
+</body>
+</html>

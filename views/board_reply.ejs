@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>답글 달기</title>
+    <style>
+        body { font-family: '맑은 고딕', sans-serif; background-color: #f8f9fa; padding: 40px; }
+        .write-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; box-sizing: border-box;}
+        textarea { height: 250px; }
+        button { padding: 10px 20px; background-color: #2563eb; color: white; border: none; cursor: pointer; }
+        .original-post { background: #f1f3f5; padding: 15px; margin-bottom: 20px; border-radius: 4px; font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="write-container">
+    <h2>답글 작성</h2>
+
+    <div class="original-post">
+        <strong>원문:</strong> <%= parentPost.title %><br>
+        <%= parentPost.content %>
+    </div>
+
+    <form action="/cs/reply/<%= parentPost.id %>" method="POST">
+        <input type="text" name="title" value="[답변] <%= parentPost.title %>" required>
+        <input type="text" name="author" placeholder="작성자(관리자)" required>
+        <textarea name="content" placeholder="답변 내용을 입력하세요" required></textarea>
+
+        <button type="submit">답글 등록</button>
+        <a href="/cs/view/<%= parentPost.id %>" style="margin-left: 10px;">취소</a>
+    </form>
+</div>
+</body>
+</html>
